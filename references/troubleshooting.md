@@ -41,7 +41,7 @@ python <skill>/scripts/ve.py env
 
 - 只有已开放的接口接受 API Key；管理类接口需要更高权限的令牌。
 - 典型无权访问（会 401）：`/api/v1/image-edit/save`、studio 项目路由、部分管理端点。
-- `ve.py api` 透传不等于全通——透传被 401 时，说明该接口未向 API Key 开放。
+- `api` 透传不等于全通——透传被 401 时，说明该接口未向 API Key 开放。
 - 令牌无效/过期 → 401；令牌有效但无该资源权限 → 403。
 
 ## HTTP 状态码对照
