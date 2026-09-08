@@ -2,7 +2,5 @@
 __pycache__/
 *.py[cod]
 
-# 技能产物与评测工作区（skill-creator 约定目录）
-visionengine-workspace/
-**/ve-output/
-**/eval-output/
+# 评测产物与临时文件（不提交；技能包本体在 visionengine/）
+temp/

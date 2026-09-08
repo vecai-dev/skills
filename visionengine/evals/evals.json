@@ -4,13 +4,14 @@
     {
       "id": 0,
       "name": "cover-image",
-      "prompt": "帮我出一张竖版封面图，9:16 的，画面是傍晚的海边公路，一辆复古敞篷车在开，要有电影感。用 VisionEngine 生成，出完把本地文件路径发我。",
-      "expected_output": "生成一张 9:16 竖版图片并落盘到本地，最终回复里给出本地文件路径",
+      "prompt": "帮我出一张竖版封面图，9:16 的，画面是傍晚的海边公路，一辆复古敞篷车在开，要有电影感。用 VisionEngine 生成，图存到 F:/tmp/ve-eval2-cover 这个目录，出完把文件路径发我。",
+      "expected_output": "生成一张精确 1440×2560 的竖版图片，落盘到用户指定的 F:/tmp/ve-eval2-cover，最终回复里给出本地文件路径",
       "files": [],
       "expectations": [
         "调用了 VisionEngine 的图片生成能力（/api/v1/image-generate 或等价接口），且调用返回成功",
-        "按 9:16 竖版出图（请求参数里体现了竖版比例，如 aspect_ratio=9:16 或等价竖版尺寸）",
-        "生成的图片真实落盘：outputs/ 目录里存在一个可识别的图片文件（PNG/JPEG 文件头，且大于 10KB）",
+        "产物是精确 1440×2560 像素（严格 9:16 竖版），而不是任意竖版尺寸",
+        "图片落在用户指定的目录 F:/tmp/ve-eval2-cover 下（而不是默认的 ./ve-output 或其它位置）",
+        "图片文件真实有效：可解析的 JPEG/PNG 文件头，且大于 10KB",
         "最终回复里给出了图片的本地文件路径"
       ]
     },
@@ -25,23 +26,27 @@
         "轮询克隆任务直到状态 ready 才继续后续合成（没有在未就绪时直接合成）",
         "用克隆出的音色提交了语音合成任务，文本与用户要求一致（「大家好，欢迎来到我的频道，今天我们聊聊人工智能。」）",
         "合成任务到达终态且成功（无失败/超时未完成）",
-        "音频真实落盘：outputs/ 目录里存在一个可识别的音频文件（WAV/MP3 文件头，且大于 10KB）",
+        "产物音频非空：可解析的 WAV/MP3 文件头、大于 10KB、时长在 4-8 秒之间且采样点 RMS 不为零（不是静音文件）",
         "最终回复里给出了音频的本地文件路径"
       ]
     },
     {
       "id": 2,
       "name": "upload-assets-to-workspace",
-      "prompt": "我在做一个 Remotion 项目，要往我的 VisionEngine 工作区里放两个文件：F:/visionengine/skills/visionengine/evals/files/Cover.tsx 这个组件，还有 F:/visionengine/skills/visionengine/evals/files/cover.png 这张封面图。放好之后确认一下它们都在工作区里。",
-      "expected_output": "Cover.tsx 落到 src/、cover.png 落到 public/images/，并列出工作区文件确认两者存在",
+      "prompt": "我在做一个 Remotion 项目，要往我的 VisionEngine 工作区里放两个文件：一个 Remotion 组件（.tsx）和一张封面图（.png）。放好之后确认一下它们都在工作区里。",
+      "expected_output": "组件 .tsx 落到 src/、封面 .png 落到 public/images/，列出工作区文件确认两者存在且与本地源文件字节一致",
       "files": [
-        "evals/files/Cover.tsx",
-        "evals/files/cover.png"
+        "evals/files/CoverA.tsx",
+        "evals/files/cover-a.png",
+        "evals/files/CoverB.tsx",
+        "evals/files/cover-b.png"
       ],
       "expectations": [
-        "Cover.tsx 被放进工作区的 src/ 目录（而不是 public/documents 或其它位置）",
-        "cover.png 被放进工作区的 public/images/ 目录",
+        "组件 .tsx 被放进工作区的 src/ 目录（而不是 public/documents 或其它位置）",
+        "封面 .png 被放进工作区的 public/images/ 目录",
         "上传后通过工作区文件列表接口确认了两个文件确实存在（有 list 的返回证据，而不是只凭上传响应推断）",
+        "工作区里没有产生重复残留（不存在同名的 -1 / -2 后缀副本）",
+        "工作区中的两个文件与本地源文件字节一致（sha256 相同）",
         "最终回复里给出了两个文件在工作区中的路径"
       ]
     }

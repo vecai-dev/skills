@@ -99,6 +99,8 @@ python <skill>/scripts/ve.py env
   ```
 - **HTTP 头不能承载中文**：`subtitle` 的 `X-Media-Filename` 会被 ASCII 化；中文文件名建议改用 URL 输入。
 - **控制台编码**：CLI 启动时把 stdout/stderr 强制为 UTF-8，重定向到文件时中文不会乱码。
+  若你另写 Python 片段或 shell 管道处理输出（如 `python -c ...`、`... | python -m json.tool`），
+  Windows 下它们仍会用 GBK 解码而显示乱码——给这些命令加 `PYTHONUTF8=1` 前缀即可，与 CLI 本身无关。
 - `FILE_MODE=local` 依赖 POSIX 挂载路径，**Windows 客户端不可用**（`relative_to` 会失败），请用默认 `remote`。
 
 ## FILE_MODE 与共享挂载

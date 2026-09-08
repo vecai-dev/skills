@@ -41,6 +41,9 @@
 - `image edit` / `generate-from-images` 必须给 `--image`（可重复），`generate` 不要给。
 - 返回：`choices[0].message.images[].image_url.url` 是 data URL；CLI 已解码落盘并返回 `local_paths`。
 - 单张成本约 **$0.04**（14400 image tokens），耗时 15–30s。
+- **竖版偶尔被旋转 90°**：上游模型对 `9:16` 请求偶发返回横置画面（尺寸仍是 1440×2560，但地平线竖直）。
+  提示词里显式写"竖版竖向构图、地平线保持水平"可降低概率；若产物方向不对，重生成一次即可，
+  不要把它当成 CLI 的 bug（CLI 只负责落盘与尺寸校验）。
 
 ## edit-dashscope
 
