@@ -1,6 +1,6 @@
 # 更新记录
 
-本文件记录 visionengine 技能包的用户可见变更。版本号遵循语义化版本（`major.minor.patch`）。
+本文件记录 vec-skills 技能包的用户可见变更。版本号遵循语义化版本（`major.minor.patch`）。
 
 ## 1.0.0 — 2026-09-09
 
@@ -14,3 +14,4 @@
 - 异步任务统一 `submit` / `query` 形态，`--wait` 轮询到终态，产物自动落盘。
 - 随包分发离线音色目录 `assets/voices.json`，`audio voices` 不联网、不计费。
 - 附带 `references/` 六篇分域文档：图片、语音与字幕、视频、数字人、工作区与渲染、故障排查。
+- 采用 MIT 许可。
