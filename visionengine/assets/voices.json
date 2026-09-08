@@ -1,0 +1,246 @@
+{
+  "_comment": "音色目录（离线快照），来源 ve-mcp/packages/audio-tts/src/voices.ts；--speaker 传 voice_type",
+  "count": 10,
+  "voices": [
+    {
+      "id": "7574011450654457882",
+      "voice_type": "zh_female_xiaohe_uranus_bigtts",
+      "name": "小何 2.0",
+      "avatar": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/avatar/小何.png",
+      "gender": "female",
+      "gender_label": "女",
+      "age": "青年",
+      "categories": [
+        "通用场景"
+      ],
+      "languages": [
+        {
+          "language": "zh-cn",
+          "text": "清晨的阳光跳上窗台，让我们带着笑脸，去赴一场春天的约会吧！",
+          "flag": "🇨🇳🇺🇸"
+        }
+      ],
+      "emotions": [],
+      "description": "声线甜美有活力的妹妹，活泼开朗，笑容明媚。",
+      "status": "online",
+      "resource_id": "seed-tts-2.0",
+      "trial_url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/zh_female_xiaohe_uranus_bigtts.mp3"
+    },
+    {
+      "id": "7569915035259256875",
+      "voice_type": "zh_female_vv_uranus_bigtts",
+      "name": "Vivi 2.0",
+      "avatar": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/avatar/vivi_v2.png",
+      "gender": "female",
+      "gender_label": "女",
+      "age": "青年",
+      "categories": [
+        "通用场景"
+      ],
+      "languages": [
+        {
+          "language": "zh-cn",
+          "text": "今天的阳光真好啊！感觉整个人都充满了活力呢。真想去外面跑一跑，去探索那些有趣的地方，去邂逅一些奇妙的事情。生活嘛，就该这样自由自在、充满朝气的呀！哈哈！",
+          "flag": "🇨🇳"
+        }
+      ],
+      "emotions": [],
+      "description": "语调平稳、咬字柔和、自带治愈安抚力的女声音色",
+      "status": "online",
+      "resource_id": "seed-tts-2.0",
+      "trial_url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/zh_female_vv_uranus_bigtts.wav"
+    },
+    {
+      "id": "7574012101065179182",
+      "voice_type": "zh_male_taocheng_uranus_bigtts",
+      "name": "小天 2.0",
+      "avatar": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/avatar/小天.png",
+      "gender": "male",
+      "gender_label": "男",
+      "age": "青年",
+      "categories": [
+        "通用场景"
+      ],
+      "languages": [
+        {
+          "language": "zh-cn",
+          "text": "宝贝别着急，每颗星星都散发着属于自己的光芒，慢慢长大，你也会闪闪发光。",
+          "flag": "🇨🇳🇺🇸"
+        }
+      ],
+      "emotions": [],
+      "description": "眉目清朗男大，清澈温润有朝气，开朗真诚。",
+      "status": "online",
+      "resource_id": "seed-tts-2.0",
+      "trial_url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/zh_male_taocheng_uranus_bigtts.mp3"
+    },
+    {
+      "id": "7574011909091885094",
+      "voice_type": "zh_male_m191_uranus_bigtts",
+      "name": "云舟 2.0",
+      "avatar": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/avatar/云舟.png",
+      "gender": "male",
+      "gender_label": "男",
+      "age": "青年",
+      "categories": [
+        "通用场景"
+      ],
+      "languages": [
+        {
+          "language": "zh-cn",
+          "text": "风穿过林间的低语，像清泉淌过心尖，听着就好像可以吹散所有烦恼。",
+          "flag": "🇨🇳🇺🇸"
+        }
+      ],
+      "emotions": [],
+      "description": "声音磁性的男生，成熟理性，做事有条理，让人信赖。",
+      "status": "online",
+      "resource_id": "seed-tts-2.0",
+      "trial_url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/zh_male_m191_uranus_bigtts.mp3"
+    },
+    {
+      "id": "7569913658966016042",
+      "voice_type": "zh_female_santongyongns_saturn_bigtts",
+      "name": "流畅女声",
+      "avatar": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/avatar/流畅女声.png",
+      "gender": "female",
+      "gender_label": "女",
+      "age": "青年",
+      "categories": [
+        "视频配音"
+      ],
+      "languages": [
+        {
+          "language": "zh-cn",
+          "text": "这家奶茶店的珍珠超有嚼劲！三分糖加冰，一口下去又甜又清爽，夏天喝这个真的太绝啦！",
+          "flag": "🇨🇳"
+        }
+      ],
+      "emotions": [],
+      "description": "语调顺滑自然、咬字利落不拖沓、适配多种场景的百搭女声音色",
+      "status": "online",
+      "resource_id": "seed-tts-2.0",
+      "trial_url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/流畅女声.wav"
+    },
+    {
+      "id": "7569915380160921663",
+      "voice_type": "zh_female_meilinvyou_saturn_bigtts",
+      "name": "魅力女友",
+      "avatar": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/avatar/魅力女友_v2.png",
+      "gender": "female",
+      "gender_label": "女",
+      "age": "青年",
+      "categories": [
+        "视频配音"
+      ],
+      "languages": [
+        {
+          "language": "zh-cn",
+          "text": "这支豆沙色的口红，涂在唇上是柔雾感，像傍晚的晚霞落在嘴角，不张扬，却能让你回头率满满。",
+          "flag": "🇨🇳"
+        }
+      ],
+      "emotions": [],
+      "description": "嗲软轻飘的轻熟美人，妩媚有耐心，温柔勾人。",
+      "status": "online",
+      "resource_id": "seed-tts-2.0",
+      "trial_url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/zh_female_meilinvyou_saturn_bigtts.wav"
+    },
+    {
+      "id": "7569915380160905279",
+      "voice_type": "zh_female_mizai_saturn_bigtts",
+      "name": "黑猫侦探社咪仔",
+      "avatar": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/avatar/黑猫侦探社咪仔.png",
+      "gender": "female",
+      "gender_label": "女",
+      "age": "青年",
+      "categories": [
+        "视频配音"
+      ],
+      "languages": [
+        {
+          "language": "zh-cn",
+          "text": "杨绛先生说：我们曾如此渴望命运的波澜，到最后才发现，人生最曼妙的风景，是内心的淡定与从容。愿你也能在喧嚣里，守住这份平静。",
+          "flag": "🇨🇳"
+        }
+      ],
+      "emotions": [],
+      "description": "语调沉稳、咬字扎实、自带踏实和包容感的女声音色",
+      "status": "online",
+      "resource_id": "seed-tts-2.0",
+      "trial_url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/zh_female_mizai_saturn_bigtts.wav"
+    },
+    {
+      "id": "7569915035259256875",
+      "voice_type": "saturn_zh_male_tiancaitongzhuo_tob",
+      "name": "天才同桌",
+      "avatar": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/avatar/天才同桌.png",
+      "gender": "male",
+      "gender_label": "男",
+      "age": "青年",
+      "categories": [
+        "角色扮演"
+      ],
+      "languages": [
+        {
+          "language": "zh-cn",
+          "text": "这么基础的公式还弄不明白？不过没关系，我现在跟你讲，你认真听好了啊！这个公式其实很简单，你看，只把这个关键值代进去，再按这三步推导，就能得出结果..明白了吗？",
+          "flag": "🇨🇳"
+        }
+      ],
+      "emotions": [],
+      "description": "语气明快利落、咬字清晰带活力、聪明机敏又毒舌的少年音色",
+      "status": "online",
+      "resource_id": "seed-tts-2.0",
+      "trial_url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/saturn_zh_male_tiancaitongzhuo_tob.wav"
+    },
+    {
+      "id": "7569915380160856127",
+      "voice_type": "saturn_zh_female_cancan_tob",
+      "name": "知性灿灿",
+      "avatar": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/avatar/灿灿.png",
+      "gender": "female",
+      "gender_label": "女",
+      "age": "青年",
+      "categories": [
+        "角色扮演"
+      ],
+      "languages": [
+        {
+          "language": "zh-cn",
+          "text": "早上出门忘记带伞了，走到半路下起了小雨。我没跑，就慢慢走在雨里，感受雨滴落在头发上的轻凉。走了大概十分钟，雨居然停了。我摸了摸微湿的发梢，忽然明白 —— 有时候不用急着躲避风雨，或许它并不会持续太久，反而能让你多感受一种天气的味道。",
+          "flag": "🇨🇳"
+        }
+      ],
+      "emotions": [],
+      "description": "语气温柔平缓、带有些许软绵感却又善解人意的少女音色",
+      "status": "online",
+      "resource_id": "seed-tts-2.0",
+      "trial_url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/saturn_zh_female_cancan_tob.wav"
+    },
+    {
+      "id": "7569915035259273259",
+      "voice_type": "zh_female_jitangnv_saturn_bigtts",
+      "name": "鸡汤女",
+      "avatar": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/avatar/鸡汤女.png",
+      "gender": "female",
+      "gender_label": "女",
+      "age": "青年",
+      "categories": [
+        "视频配音"
+      ],
+      "languages": [
+        {
+          "language": "zh-cn",
+          "text": "早安呀～新的一天不用急着追赶别人，先喝杯热粥，把自己照顾好，再慢慢去遇见今天的小美好。",
+          "flag": "🇨🇳"
+        }
+      ],
+      "emotions": [],
+      "description": "语气轻软、尾音轻落、带有自然呼吸感且十分亲切的女声音色",
+      "status": "online",
+      "resource_id": "seed-tts-2.0",
+      "trial_url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/lm_hz_ihsph/ljhwZthlaukjlkulzlp/portal/bigtts/zh_female_jitangnv_saturn_bigtts.wav"
+    }
+  ]
+}

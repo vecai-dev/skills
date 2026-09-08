@@ -1,0 +1,8 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# 技能产物与评测工作区（skill-creator 约定目录）
+visionengine-workspace/
+**/ve-output/
+**/eval-output/
