@@ -7,8 +7,8 @@ ve.py —— VisionEngine CLI 入口。
     python ve.py <组> <命令> [参数]
 
 环境变量：
-    VISION_ENGINE_API_ENDPOINT   平台服务地址（必需），如 https://api.visionengine-tech.com
-    VISION_ENGINE_API_KEY        Bearer API Key（必需）
+    VISION_ENGINE_API_KEY        Bearer API Key（唯一必须设置的变量）
+    VISION_ENGINE_API_ENDPOINT   平台服务地址（默认官方地址）
     VISION_ENGINE_RENDER_ENDPOINT Remotion 渲染服务（默认官方地址）
     VISION_ENGINE_WORKDIR        相对路径基准目录（默认当前目录）
     VISION_ENGINE_OUTPUT_DIR     产物落盘目录（默认 ./ve-output）
@@ -32,10 +32,6 @@ from _ve_client import DEFAULT_TIMEOUT, VeError, fail, setup_stdout  # noqa: E40
 def _common():
     # SUPPRESS 让子命令未显式给出时不覆盖顶层同名参数（argparse 子解析器默认值会覆盖父命名空间）
     parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument("--endpoint", default=argparse.SUPPRESS, help="覆盖 VISION_ENGINE_API_ENDPOINT")
-    parser.add_argument("--api-key", dest="api_key", default=argparse.SUPPRESS, help="覆盖 VISION_ENGINE_API_KEY")
-    parser.add_argument("--render-endpoint", dest="render_endpoint", default=argparse.SUPPRESS,
-                        help="覆盖 VISION_ENGINE_RENDER_ENDPOINT")
     parser.add_argument("--timeout", type=float, default=argparse.SUPPRESS, help="单次请求超时秒数（默认 60）")
     return parser
 

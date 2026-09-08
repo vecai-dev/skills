@@ -37,8 +37,8 @@ DIRECT_UPLOAD_MAX_BYTES = 8 * 1024 * 1024
 CHUNK_SIZE_BYTES = 4 * 1024 * 1024
 DEFAULT_TIMEOUT = 60.0
 LONG_TIMEOUT = 600.0
+DEFAULT_ENDPOINT = "https://api.visionengine-tech.com"
 DEFAULT_RENDER_ENDPOINT = "https://veconline-ai-api.visionengine-tech.com"
-DEFAULT_ENDPOINT_EXAMPLE = "https://api.visionengine-tech.com"
 
 ENV_ENDPOINT = "VISION_ENGINE_API_ENDPOINT"
 ENV_API_KEY = "VISION_ENGINE_API_KEY"
@@ -64,10 +64,10 @@ class VeError(Exception):
 
 
 class Config:
-    def __init__(self, endpoint="", api_key="", render_endpoint=DEFAULT_RENDER_ENDPOINT,
+    def __init__(self, endpoint=DEFAULT_ENDPOINT, api_key="", render_endpoint=DEFAULT_RENDER_ENDPOINT,
                  workdir=None, output_dir=None, file_mode="remote",
                  remotion_work_dir="/vec", timeout=DEFAULT_TIMEOUT):
-        self.endpoint = (endpoint or "").rstrip("/")
+        self.endpoint = (endpoint or DEFAULT_ENDPOINT).rstrip("/")
         self.api_key = api_key or ""
         self.render_endpoint = (render_endpoint or DEFAULT_RENDER_ENDPOINT).rstrip("/")
         self.workdir = Path(workdir or os.getcwd()).resolve()
@@ -91,33 +91,20 @@ class Config:
 
     # -- 校验 ------------------------------------------------------
 
-    def require_endpoint(self):
-        if not self.endpoint:
-            raise VeError(
-                f"缺少环境变量 {ENV_ENDPOINT}。示例：\n"
-                f"  export {ENV_ENDPOINT}={DEFAULT_ENDPOINT_EXAMPLE}\n"
-                f"  export {ENV_API_KEY}=<你的 API Key>"
-            )
-        return self.endpoint
-
     def require_key(self):
         if not self.api_key:
             raise VeError(
-                f"缺少环境变量 {ENV_API_KEY}（Bearer 令牌）。"
-                f"请在 VisionEngine 控制台创建 API Key 后注入环境变量。"
+                f"缺少环境变量 {ENV_API_KEY}。请在 VisionEngine 控制台创建 API Key 后注入，例如：\n"
+                f"  export {ENV_API_KEY}=<你的 API Key>"
             )
         return self.api_key
 
 
 def load_config(args, require_network=True):
-    """从环境变量 + 命令行覆盖构造 Config。"""
-    endpoint = (getattr(args, "endpoint", None) or os.environ.get(ENV_ENDPOINT) or "").strip()
-    api_key = (getattr(args, "api_key", None) or os.environ.get(ENV_API_KEY) or "").strip()
-    render_endpoint = (
-        getattr(args, "render_endpoint", None)
-        or os.environ.get(ENV_RENDER_ENDPOINT)
-        or DEFAULT_RENDER_ENDPOINT
-    ).strip()
+    """从环境变量构造 Config（服务地址等均为内置默认值，只有 API Key 必须由用户提供）。"""
+    endpoint = (os.environ.get(ENV_ENDPOINT) or DEFAULT_ENDPOINT).strip()
+    api_key = (os.environ.get(ENV_API_KEY) or "").strip()
+    render_endpoint = (os.environ.get(ENV_RENDER_ENDPOINT) or DEFAULT_RENDER_ENDPOINT).strip()
 
     file_mode = (os.environ.get(ENV_FILE_MODE) or "remote").strip().lower()
     if file_mode not in {"remote", "local"}:
@@ -136,7 +123,6 @@ def load_config(args, require_network=True):
     )
 
     if require_network:
-        cfg.require_endpoint()
         cfg.require_key()
     return cfg
 

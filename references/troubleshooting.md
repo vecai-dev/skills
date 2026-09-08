@@ -25,15 +25,15 @@ python <skill>/scripts/ve.py env
 
 | 变量 | 必需 | 默认 | 说明 |
 |---|---|---|---|
-| `VISION_ENGINE_API_ENDPOINT` | ✅ | 无 | 如 `https://api.visionengine-tech.com` |
-| `VISION_ENGINE_API_KEY` | ✅ | 无 | Bearer 令牌 |
+| `VISION_ENGINE_API_KEY` | ✅ | 无 | Bearer 令牌（唯一必须设置的变量） |
+| `VISION_ENGINE_API_ENDPOINT` | | `https://api.visionengine-tech.com` | 平台服务地址 |
 | `VISION_ENGINE_RENDER_ENDPOINT` | | `https://veconline-ai-api.visionengine-tech.com` | Remotion 渲染服务 |
 | `VISION_ENGINE_WORKDIR` | | 当前目录 | 相对路径基准 |
 | `VISION_ENGINE_OUTPUT_DIR` | | `./ve-output` | 产物落盘目录 |
 | `VISION_ENGINE_FILE_MODE` | | `remote` | `remote` 自动上传 / `local` 共享挂载 |
 | `VISION_ENGINE_REMOTION_WORK_DIR` | | `/vec` | `local` 模式的挂载根 |
 
-缺失时 CLI 会直接报错并给出示例，退出码 1。所有命令也接受 `--endpoint` / `--api-key` / `--timeout` 临时覆盖。
+缺少 API Key 时 CLI 会直接报错并给出示例，退出码 1；其余变量都有内置默认值。`--timeout` / `--out` 可在命令行临时覆盖。
 
 **密钥只经环境变量注入，不要写进任何文件或提交到仓库。**
 

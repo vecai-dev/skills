@@ -168,9 +168,9 @@ def cmd_env(args):
         "remotion_work_dir": cfg.remotion_work_dir,
         "python": sys.version.split()[0],
     }
-    if not cfg.endpoint:
-        info["hint"] = "未设置 VISION_ENGINE_API_ENDPOINT，除 audio voices 外所有命令都需要它"
-    if cfg.endpoint and cfg.api_key:
+    if not cfg.api_key:
+        info["hint"] = "未设置 VISION_ENGINE_API_KEY，除 env / audio voices 外所有命令都需要它"
+    if cfg.api_key:
         try:
             info["auth"] = request_json(cfg, "GET", "/api/v1/auth/me")
         except VeError as exc:

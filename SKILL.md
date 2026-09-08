@@ -45,7 +45,7 @@ python <skill>/scripts/ve.py files list --path . --max-depth 1
 | `render` | `submit` `query` `list` `cancel` `retry` `download` | Remotion 远端渲染 | files-render |
 | `llm` | `chat` | 文案/脚本生成 | 本文件 |
 
-每个命令都支持 `--help`。通用开关：`--endpoint` / `--api-key` / `--timeout` / `--out`。
+每个命令都支持 `--help`。通用开关：`--timeout` / `--out`；服务地址等由环境变量配置，无需在命令上指定。
 
 ## 四条核心工作流
 
