@@ -2,5 +2,5 @@
 __pycache__/
 *.py[cod]
 
-# 评测产物与临时文件（不提交；技能包本体在 visionengine/）
+# 评测产物与临时文件（不提交）
 temp/

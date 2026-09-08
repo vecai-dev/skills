@@ -1,41 +1,24 @@
 ---
 name: visionengine
-description: "VisionEngine（视擎科技）媒体 AI 能力命令行：通过 ve.py 调用后端 HTTP 接口完成图片生成/编辑/识别/提示词反推、语音合成与音色克隆、字幕生成与打轴、图生视频/文生视频/视频风格重绘/视频理解、数字人对口型、Remotion 工作区文件管理与远端渲染、LLM 文案生成。当用户要求生成图片或视频、给视频配音、克隆音色、做数字人、生成字幕或转写、做视频风格迁移、把素材上传到 Remotion 工作区、渲染 Remotion 成片、反推图片提示词，或提到 VisionEngine / 视擎 / ve 的媒体任务时使用本技能——即使用户没有点名 VisionEngine，只要任务落在上述媒体 AI 能力范围内也应使用。不适用于纯本地 ffmpeg 处理或与 VisionEngine 平台无关的通用编码任务。"
+description: "VisionEngine（视擎科技）媒体 AI 能力命令行：用 ve.py 完成图片生成/编辑/识别/提示词反推、语音合成与音色克隆、字幕生成与打轴、图生视频/文生视频/视频风格重绘/视频理解、数字人对口型、Remotion 工作区文件管理与远端渲染、LLM 文案生成。当用户要求生成图片或视频、给视频配音、克隆音色、做数字人、生成字幕或转写、做视频风格迁移、把素材上传到 Remotion 工作区、渲染 Remotion 成片、反推图片提示词，或提到 VisionEngine / 视擎 / ve 的媒体任务时使用本技能——即使用户没有点名 VisionEngine，只要任务落在上述媒体 AI 能力范围内也应使用。不适用于纯本地 ffmpeg 处理或与 VisionEngine 平台无关的通用编码任务。"
 license: "Proprietary - VisionEngine internal use"
-compatibility: "Python 3.9+（仅标准库，无需安装依赖）；需要网络访问 VISION_ENGINE_API_ENDPOINT"
+compatibility: "Python 3.9+（仅标准库，无需安装依赖）；需要网络访问平台服务"
 ---
 
 # VisionEngine CLI
 
-通过一个零依赖的 Python 脚本调用 VisionEngine 后端的全部媒体 AI 能力（与 ve-mcp 的 MCP 服务器同源、同接口）。
+一个零依赖的 Python 脚本，覆盖 VisionEngine 平台的全部媒体 AI 能力。
 
 ## 何时用 / 何时不用
 
 **用**：图片生成与编辑、图片识别与提示词反推、TTS 配音与音色克隆、字幕生成/打轴、图生视频/文生视频/风格重绘、视频理解、数字人对口型、Remotion 工作区文件读写与远端渲染、用 LLM 生成文案。
 
-**不用**：与 VisionEngine 平台无关的本地视频处理（直接用 ffmpeg）、纯前端代码任务、需要 Supabase JWT 的管理端点（本 CLI 用 API Key，白名单外端点会 401）。
-
-## 前置条件
-
-两个必需环境变量（**只经环境变量注入，绝不写入文件或提交到仓库**）：
-
-```bash
-export VISION_ENGINE_API_ENDPOINT=https://api.visionengine-tech.com
-export VISION_ENGINE_API_KEY=<你的 API Key>
-```
-
-自检（会真实调用 `GET /api/v1/auth/me`）：
-
-```bash
-python <skill>/scripts/ve.py env
-```
-
-可选变量：`VISION_ENGINE_RENDER_ENDPOINT`（渲染后端）、`VISION_ENGINE_WORKDIR`（相对路径基准）、
-`VISION_ENGINE_OUTPUT_DIR`（产物目录，默认 `./ve-output`）、`VISION_ENGINE_FILE_MODE`（默认 `remote`）。
+**不用**：与 VisionEngine 平台无关的本地视频处理（直接用 ffmpeg）、纯前端代码任务、需要更高权限的管理端点（API Key 无权访问，会 401）。
 
 ## 60 秒上手
 
 ```bash
+python <skill>/scripts/ve.py env                       # 自检：确认凭据可用
 python <skill>/scripts/ve.py image generate --prompt "一只橘猫在窗台晒太阳" --aspect-ratio 9:16
 python <skill>/scripts/ve.py audio voices --gender female
 python <skill>/scripts/ve.py audio tts --text "你好，欢迎使用视擎" --speaker zh_female_vv_uranus_bigtts
@@ -49,15 +32,15 @@ python <skill>/scripts/ve.py files list --path . --max-depth 1
 | 组 | 命令 | 说明 | 参考 |
 |---|---|---|---|
 | `env` | `env` | 诊断端点/密钥/鉴权 | [troubleshooting](references/troubleshooting.md) |
-| `api` | `api <METHOD> <PATH> [--data\|--data-file] [--query K=V]` | 任意白名单端点透传 | troubleshooting |
-| `image` | `generate` `edit` `edit-dashscope` `generate-from-images` `recognize` `prompt-reverse` | 图片生成/编辑/识别/反推 | [image](references/image.md) |
+| `api` | `api <METHOD> <PATH> [--data\|--data-file] [--query K=V]` | 任意已开放接口透传 | troubleshooting |
+| `image` | `generate` `edit` `edit-advanced` `generate-from-images` `recognize` `prompt-reverse` | 图片生成/编辑/识别/反推 | [image](references/image.md) |
 | `audio` | `tts` `voices` | 语音合成 / 音色目录（本地） | [audio-subtitle](references/audio-subtitle.md) |
 | `subtitle` | `generate` `align` | 字幕生成 / 强制对齐（自动落 .srt） | audio-subtitle |
 | `video` | `img2video\|text2video\|style-transfer\|recognize` × `submit\|query`（recognize 另有 `result` `cancel`） | 视频生成与理解 | [video](references/video.md) |
 | `dh` | `clone\|voice\|lipsync` × `submit\|query` | 音色克隆 / 克隆音色合成 / 对口型 | [digital-human](references/digital-human.md) |
 | `files` | `list` `read` `upload` `download` `delete` | Remotion 工作区文件 | [files-render](references/files-render.md) |
 | `render` | `submit` `query` `list` `cancel` `retry` `download` | Remotion 远端渲染 | files-render |
-| `llm` | `chat` | OpenRouter 代理（文案/脚本） | 本文件 |
+| `llm` | `chat` | 文案/脚本生成 | 本文件 |
 
 每个命令都支持 `--help`。通用开关：`--endpoint` / `--api-key` / `--timeout` / `--out`。
 
@@ -67,12 +50,12 @@ python <skill>/scripts/ve.py files list --path . --max-depth 1
 
 ```bash
 python <skill>/scripts/ve.py image generate --prompt "赛博朋克城市夜景，霓虹" --aspect-ratio 16:9
-python <skill>/scripts/ve.py image edit-dashscope --image out.png --prompt "把背景换成雨天"
+python <skill>/scripts/ve.py image edit-advanced --image out.png --prompt "把背景换成雨天"
 python <skill>/scripts/ve.py image recognize --image out.png --tool visual
 python <skill>/scripts/ve.py image prompt-reverse --image out.png --output-language zh
 ```
 
-产物自动落盘到 `VISION_ENGINE_OUTPUT_DIR`，结果里的 `local_paths` 就是本地路径。
+产物自动落盘到默认输出目录（`--out` 可覆盖），结果里的 `local_paths` 就是本地路径。
 
 ### 2. 配音：音色克隆 → 克隆音色合成
 
@@ -117,15 +100,15 @@ python <skill>/scripts/ve.py render query --task-id <taskId> --wait --download
 - **异步任务**：`submit` 立即返回 `task_id`；`query` 默认只查一次，`--wait` 轮询到终态（默认 15s 间隔、300s 上限）。
   轮询超时**不会丢任务**，用 `query --task-id <id>` 继续查。
 - **产物下载**：视频/音频类 `query` 默认下载（`--no-download` 只回 URL）；图片类生成即落盘。
-  落盘目录 `VISION_ENGINE_OUTPUT_DIR`（默认 `./ve-output`），返回字段是 `local_path` / `local_paths`。
+  落盘目录默认 `./ve-output`（用 `--out` 覆盖），返回字段是 `local_path` / `local_paths`。
 - **计费**：异步任务先预扣、后结算，失败自动回滚；每次 `query` 返回 `billing_status`（`settled` / `rolled_back`）。
   预扣额度：img2video 200、text2video 300、style-transfer 100、lipsync 500、video recognize 20。
 - **本地文件怎么传**：图片默认内联 base64（不污染工作区）；视频/音频等需要 URL 的媒体先自动上传到工作区
   `public/{images,videos,audio}`（≤8MB 单次上传，更大自动 4MB 分片），再以共享 URL 提交。
   也可直接传 `http(s)://` 公网 URL 或用户桶内存储路径。
-- **签名 URL 会过期**：Supabase 签名约 1h、DashScope 产物约 24h；链式流程传存储路径（不过期），URL 用完即弃。
+- **签名 URL 会过期**：私有产物链接约 1h、生成类产物链接约 24h；链式流程传存储路径（不过期），URL 用完即弃。
 - **超时**：默认 60s；图片类 180s；视频理解/克隆/对口型 600s。`video recognize submit` 是**同步阻塞**调用（可能数分钟）。
-- **`api` 透传**：只有后端白名单内的端点接受 API Key，其余需要 Supabase JWT（会 401）。
+- **`api` 透传**：只有已开放的端点接受 API Key，其余需要更高权限的令牌（会 401）。
 
 ## 参考文件
 
@@ -142,8 +125,7 @@ python <skill>/scripts/ve.py render query --task-id <taskId> --wait --download
 
 以下能力**当前 CLI 未实现**，需要时请说明：
 
-- **热门选题自动生成与推送**：workspace 内无对应 HTTP 接口（ve-dataminer 为纯前端，真实能力挂在外部 n8n webhook）。
-  现阶段可用 `llm chat` + 现有素材能力拼出雏形。
-- **图片抠图**（image-matting）：MCP 侧仍是空壳，后端无端点。
-- **发布分发**（ve-publishpro）、**数据分析**（ve-dataminer）：仅前端，无 API。
-- 其余 workspace 子项目能力会逐步接入本 CLI（用 `api` 透传可提前调用已有端点）。
+- **热门选题自动生成与推送**：平台暂无对应能力，现阶段可用 `llm chat` + 现有素材能力拼出雏形。
+- **图片抠图**（image-matting）：平台暂无对应能力。
+- **发布分发**、**数据分析**：平台暂无对应能力。
+- 其余平台能力会逐步接入本 CLI（用 `api` 透传可提前调用已开放接口）。

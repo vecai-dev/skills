@@ -25,12 +25,12 @@
 - **≤8MB** → 一次 multipart `POST /save`（字段：`file`、`file_name`、`path`=目标**目录**）。
 - **>8MB** → `POST /save/chunk`，4MB 分片，**所有分片复用同一个 `upload_id`**（CLI 自动生成并复用），
   只有最后一片的响应带 `file` 对象。
-- 同名冲突时后端**自动改名**（`a.png` → `a-1.png`）→ **一律使用返回的 `file.path`**。
+- 同名冲突时服务端**自动改名**（`a.png` → `a-1.png`）→ **一律使用返回的 `file.path`**。
 - `--source url`：CLI 先下载到本地临时文件再走上面流程（替代已下线的 `/api/v1/save-remote`）。
 
 ## 路径映射
 
-`--target-path` 省略时后端按 content-type 推断：
+`--target-path` 省略时按 content-type 推断：
 
 | 类型 | 落点 |
 |---|---|
@@ -62,7 +62,7 @@ ve.py render submit --composition-id MyVideo --export-type video --codec h264 \
 - `--composition-id` 必填；`--export-type`：`video | still | audio | image-sequence`。
 - `--codec`：`h264 h265 vp8 vp9 prores gif`；`--audio-codec`：`mp3 aac wav`；`--image-format`：`png jpeg pdf webp`。
 - `--input-props` 接受 JSON 字符串或 `@文件路径`。
-- `--out-name` 省略时后端默认 `out/<compositionId>.<ext>`（image-sequence 为 `out/<compositionId>-frames`）。
+- `--out-name` 省略时默认 `out/<compositionId>.<ext>`（image-sequence 为 `out/<compositionId>-frames`）。
 - `--entry-point` 默认 `src/index.ts`；`--start-frame` / `--end-frame` / `--every-nth-frame` / `--frame`（still 用）。
 - `--studio-sid` 写入 body 的 `studioOpaqueId`（默认 `api`）——**请求头方式无效**。
 - 响应被包在 `{success, data:{taskId}}` / `{success, data: record}` / `{success, data:[...]}` 里，CLI 已解包。

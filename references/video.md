@@ -78,7 +78,7 @@ ve.py video recognize cancel --task-id vid_task_xxx
 - `--task-type`：`understand`（默认）| `cut_effect_points` | `emotion_analysis` | `script_generate` | `style_analyze`。
 - `--prompt-mode template|auto`：`auto` 必须同时给 `--prompt`。
 - `--start-sec` / `--end-sec` 限定分析区间（秒）。
-- **`submit` 是同步阻塞调用**（后端等全部分析完成才返回），5 秒视频约 2–3 分钟，
+- **`submit` 是同步阻塞调用**（服务端等全部分析完成才返回），5 秒视频约 2–3 分钟，
   长视频更久；CLI 超时给到 600s。返回 `{task_id, status, result, usage}`，`status` 可能是 `SUCCEEDED` 或 `PARTIAL_SUCCESS`。
 - 返回的状态键是 **`status`**（不是 `task_status`），CLI 已兼容。
 - `query` / `result` / `cancel` 走 `/api/v1/video/task/{id}`、`/task/{id}/result`、`/cancel/{id}`。
@@ -93,11 +93,11 @@ ve.py video recognize cancel --task-id vid_task_xxx
 | style-transfer | 100 | 按输出秒 |
 | video recognize | 20 | 按 token |
 
-任务失败时后端自动回滚预扣，`billing_status` 会变成 `rolled_back`（成功为 `settled`）。
+任务失败时自动回滚预扣，`billing_status` 会变成 `rolled_back`（成功为 `settled`）。
 
 ## 已知限制
 
-- **视频理解有体积上限**：后端会把 >1.5MB 的视频切片到 ≤1.5MB 再送模型；
+- **视频理解有体积上限**：服务端会把 >1.5MB 的视频切片到 ≤1.5MB 再送模型；
   若源视频码率过高导致切片仍超限，会返回 **413**（错误信息被网关压平成 `Request failed`）。
   处理：先用 ffmpeg 压码率（如 `-b:v 200k`）再提交。
 - **style-transfer 的上游会自己拉取视频 URL**：若上游拉不到（返回

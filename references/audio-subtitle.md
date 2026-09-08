@@ -15,7 +15,7 @@ ve.py audio voices                       # 全部 10 个音色
 ve.py audio voices --gender female --language zh-cn
 ```
 
-- **纯本地**，不联网、不计费；数据来自 `assets/voices.json`（源：`ve-mcp/packages/audio-tts/src/voices.ts`）。
+- **纯本地**，不联网、不计费；数据来自随包分发的离线音色目录 `assets/voices.json`。
 - `--gender` 只接受 `male | female`；`--language` 做包含匹配（如 `zh-cn`）。
 - `voice_type` 即 `audio tts --speaker` 要传的值。
 
@@ -26,7 +26,7 @@ ve.py audio tts --text "你好，世界" --speaker zh_female_vv_uranus_bigtts
 ve.py audio tts --text "..." --speaker zh_male_m191_uranus_bigtts --format mp3 --speech-rate 10 --emotion happy
 ```
 
-请求体是火山引擎风格的信封结构（CLI 已封装）：
+请求体是带 `user` / `req_params` 信封的结构（CLI 已封装）：
 
 ```json
 {
@@ -86,7 +86,7 @@ ve.py subtitle align --audio voice.mp3 --text-file transcript.txt --caption-type
 ## 计费与耗时
 
 - `audio tts` 按字符计费，极低；单次 1–3s。
-- `subtitle generate` / `align` 走火山 ASR，按音频时长计费；12s 音频约 10–30s 完成。
+- `subtitle generate` / `align` 使用语音识别，按音频时长计费；12s 音频约 10–30s 完成。
 - 上传/识别失败会自动退款（`billing_status` 反映）。
 
 ## 常见错误

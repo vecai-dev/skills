@@ -27,7 +27,7 @@ python <skill>/scripts/ve.py env
 |---|---|---|---|
 | `VISION_ENGINE_API_ENDPOINT` | ✅ | 无 | 如 `https://api.visionengine-tech.com` |
 | `VISION_ENGINE_API_KEY` | ✅ | 无 | Bearer 令牌 |
-| `VISION_ENGINE_RENDER_ENDPOINT` | | `https://veconline-ai-api.visionengine-tech.com` | Remotion 渲染后端 |
+| `VISION_ENGINE_RENDER_ENDPOINT` | | `https://veconline-ai-api.visionengine-tech.com` | Remotion 渲染服务 |
 | `VISION_ENGINE_WORKDIR` | | 当前目录 | 相对路径基准 |
 | `VISION_ENGINE_OUTPUT_DIR` | | `./ve-output` | 产物落盘目录 |
 | `VISION_ENGINE_FILE_MODE` | | `remote` | `remote` 自动上传 / `local` 共享挂载 |
@@ -37,11 +37,11 @@ python <skill>/scripts/ve.py env
 
 **密钥只经环境变量注入，不要写进任何文件或提交到仓库。**
 
-## 鉴权与端点白名单
+## 鉴权与端点权限
 
-- 只有 `ve-backend/src/middleware/auth.py` **白名单内**的路径接受用户 API Key；其余路径需要 Supabase JWT。
-- 典型白名单外（会 401）：`/api/v1/image-edit/save`、studio 项目路由、部分管理端点。
-- `ve.py api` 透传不等于全通——透传被 401 时，说明该端点不在白名单。
+- 只有已开放的接口接受 API Key；管理类接口需要更高权限的令牌。
+- 典型无权访问（会 401）：`/api/v1/image-edit/save`、studio 项目路由、部分管理端点。
+- `ve.py api` 透传不等于全通——透传被 401 时，说明该接口未向 API Key 开放。
 - 令牌无效/过期 → 401；令牌有效但无该资源权限 → 403。
 
 ## HTTP 状态码对照
@@ -67,7 +67,7 @@ python <skill>/scripts/ve.py env
 
 ## 超时与长任务
 
-- 默认单次 HTTP 超时 60s；图片类放宽到 180s；视频理解/克隆/对口型放宽到 600s。
+- 默认单次请求超时 60s；图片类放宽到 180s；视频理解/克隆/对口型放宽到 600s。
 - `--wait` 的轮询上限默认 300s（`--timeout` 可调）。**超时不会丢任务**：
   用 `query --task-id <id>` 继续查即可。
 - GPU 语音克隆首次调用含冷启动，约 175s 属正常。
@@ -77,8 +77,8 @@ python <skill>/scripts/ve.py env
 
 | 来源 | 有效期 |
 |---|---|
-| Supabase 签名（克隆参考音频、克隆产物） | 约 1h |
-| DashScope 产物 URL（图片编辑、视频生成） | 约 24h |
+| 私有产物链接（克隆参考音频、克隆产物） | 约 1h |
+| 生成类产物链接（图片编辑、视频生成） | 约 24h |
 
 链式流程请传递**存储路径**（`storage.path` / `video_path`，不过期），URL 只在下载时即时获取；
 过期就重新 `query` 一次拿新 URL。
@@ -87,7 +87,7 @@ python <skill>/scripts/ve.py env
 
 - 相对路径以 `VISION_ENGINE_WORKDIR` 为基准解析。
 - 上传阈值 8MB：以下单次 multipart，以上 4MB 分片（CLI 自动复用 `upload_id`）。
-- 同名冲突后端自动改名 → 用返回的 `file.path`，不要假设文件名。
+- 同名冲突服务端自动改名 → 用返回的 `file.path`，不要假设文件名。
 - 代码文件（`.tsx`/`.ts`）上传必须 `--target-path src`。
 
 ## Windows / Git Bash 特有坑

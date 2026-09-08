@@ -350,11 +350,11 @@ def _encode_multipart(fields, file_field, file_name, file_bytes, content_type):
 
 def upload_file(cfg, local_path, target_dir=None, file_name=None, timeout=None):
     """
-    上传本地文件到用户 Remotion 工作区，返回后端给的 file 对象
+    上传本地文件到用户 Remotion 工作区，返回服务端给的 file 对象
     （字段 name / path / size / content_type）。
 
     ≤8MB 走 multipart /save；更大走 /save/chunk（4MB 分片 + 稳定 upload_id）。
-    同名冲突后端会自动改名，因此调用方必须使用返回的 path。
+    同名冲突服务端会自动改名，因此调用方必须使用返回的 path。
     """
     path = Path(local_path)
     if not path.is_file():
@@ -392,7 +392,7 @@ def _upload_direct(cfg, path, name, target_dir, timeout):
 
 def _upload_chunked(cfg, path, name, target_dir, timeout):
     total_chunks = math.ceil(path.stat().st_size / CHUNK_SIZE_BYTES)
-    # 关键：分片必须共用同一个 upload_id，否则后端每个分片各建目录，永不合并。
+    # 关键：分片必须共用同一个 upload_id，否则服务端每个分片各建目录，永不合并。
     upload_id = f"upload_{uuid.uuid4().hex}"
     content_type = _content_type_for(name)
     last_payload = None
@@ -460,7 +460,7 @@ def shared_url(cfg, path):
 def as_image_input(cfg, value):
     """
     图片类输入：http(s)/data URL 原样透传；本地文件内联为 base64 data URL；
-    其余当作后端可解析的 storage 路径。
+    其余当作服务端可解析的 storage 路径。
     """
     if value.startswith(("http://", "https://", "data:")):
         return value
@@ -484,7 +484,7 @@ def as_media_input(cfg, value, target_dir=None, force_upload=False):
         info = upload_file(cfg, path, target_dir=target_dir)
         url = f"{cfg.endpoint}/shared/{_quote_path(info['path'])}?download=true"
         return {"type": "url", "data": url}
-    # 既不是 URL 也不是本地文件 → 视为用户桶内的存储路径，交由后端校验属主
+    # 既不是 URL 也不是本地文件 → 视为用户桶内的存储路径，交由服务端校验属主
     return {"type": "storage", "path": value}
 
 
@@ -559,7 +559,7 @@ def get_path(obj, *keys, default=None):
 
 
 def pick(obj, *names, default=None):
-    """从字典里按候选键名取第一个非空值（后端字段别名较多）。"""
+    """从字典里按候选键名取第一个非空值（服务端字段别名较多）。"""
     if not isinstance(obj, dict):
         return default
     for name in names:

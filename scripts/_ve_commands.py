@@ -5,7 +5,7 @@ _ve_commands.py —— 各命令组的具体实现（被 `ve.py` 导入）。
 
 约定：
 - 每个 cmd_* 接收 argparse 命名空间，成功时用 emit() 输出 JSON，失败时抛 VeError。
-- 后端返回的字段别名较多，统一用 pick()/get_path() 取候选键。
+- 服务端返回的字段别名较多，统一用 pick()/get_path() 取候选键。
 - 本文件以下划线开头，不是入口。
 """
 
@@ -232,7 +232,7 @@ def cmd_image(args):
                                timeout=max(cfg.timeout, 180.0))
         return _emit_generated_images(cfg, args, payload)
 
-    if action == "edit-dashscope":
+    if action == "edit-advanced":
         parameters = _drop_empty({
             "n": args.n, "negative_prompt": args.negative_prompt,
             "prompt_extend": False if args.prompt_extend is False else None,
@@ -300,7 +300,7 @@ def _emit_generated_images(cfg, args, payload):
         if saved:
             local_paths.append(saved)
     if not urls:
-        raise VeError("后端未返回图片（choices[0].message.images 为空）", payload=payload)
+        raise VeError("服务端未返回图片（choices[0].message.images 为空）", payload=payload)
     emit({
         "success": True,
         "image_count": len(urls),
@@ -694,7 +694,7 @@ def _dh_submit(cfg, args):
             "name": args.name,
             "source_video": as_media_input(cfg, args.video, target_dir="public/videos"),
         })
-        # 注意：后端顶层 success 表示"已就绪"而非"请求成功"，这里以请求是否被受理为准。
+        # 注意：服务端顶层 success 表示"已就绪"而非"请求成功"，这里以请求是否被受理为准。
         payload = request_json(cfg, "POST", "/api/v1/dh/avatar-prep/submit", body=body,
                                timeout=max(cfg.timeout, 300.0))
         emit({"success": True, "avatar_id": payload.get("avatar_id"), "status": payload.get("status"),

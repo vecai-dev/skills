@@ -3,7 +3,7 @@
 目录
 - [命令总览](#命令总览)
 - [generate / edit / generate-from-images](#generate--edit--generate-from-images)
-- [edit-dashscope](#edit-dashscope)
+- [edit-advanced](#edit-advanced)
 - [recognize](#recognize)
 - [prompt-reverse](#prompt-reverse)
 - [输入图片怎么传](#输入图片怎么传)
@@ -17,7 +17,7 @@
 | `image generate` | `POST /api/v1/image-generate/generate` | base64（自动落盘） |
 | `image edit` | `POST /api/v1/image-generate/edit` | base64（自动落盘） |
 | `image generate-from-images` | `POST /api/v1/image-generate/generate-from-images` | base64（自动落盘） |
-| `image edit-dashscope` | `POST /api/v1/image-edit/edit` | 公网 URL（自动下载落盘） |
+| `image edit-advanced` | `POST /api/v1/image-edit/edit` | 公网 URL（自动下载落盘） |
 | `image recognize` | `POST /api/v1/image-recognize/analyze` | 文本 |
 | `image prompt-reverse` | `POST /api/v1/image-prompt-reverse/reverse` | 提示词文本 |
 
@@ -45,7 +45,7 @@
   提示词里显式写"竖版竖向构图、地平线保持水平"可降低概率；若产物方向不对，重生成一次即可，
   不要把它当成 CLI 的 bug（CLI 只负责落盘与尺寸校验）。
 
-## edit-dashscope
+## edit-advanced
 
 请求体：
 
@@ -58,7 +58,7 @@
 ```
 
 - `--image` 1–3 张；`--n` 1–6；`--size` 形如 `1024*1024`（`WIDTH*HEIGHT`）。
-- 与 `image generate` 不同：**返回的是 DashScope 公网 URL**（约 24h 有效），CLI 会自动下载到 `local_paths`。
+- 与 `image generate` 不同：**返回的是公网 URL**（约 24h 有效），CLI 会自动下载到 `local_paths`。
 - 成本很低（按张计费），单张约数秒。
 
 ## recognize
@@ -88,7 +88,7 @@ ve.py image prompt-reverse --image photo.jpg --output-language zh
 
 1. `http(s)://` / `data:` URL → 原样透传；
 2. 本地文件路径（相对 `VISION_ENGINE_WORKDIR`）→ CLI 读文件转 **base64 data URL** 内联；
-3. 其它字符串 → 视为用户桶内存储路径（后端强校验属主）。
+3. 其它字符串 → 视为用户桶内存储路径（服务端强校验属主）。
 
 图片类默认内联 base64，**不会**写入用户的 Remotion 工作区。
 
@@ -101,8 +101,8 @@ ve.py image prompt-reverse --image photo.jpg --output-language zh
 
 | 现象 | 原因与处理 |
 |---|---|
-| `image edit-dashscope` 返回 URL 但下载失败 | 产物 URL 约 24h 过期；重新执行命令即可 |
+| `image edit-advanced` 返回 URL 但下载失败 | 产物 URL 约 24h 过期；重新执行命令即可 |
 | 400 `images is required` | `edit` / `generate-from-images` 忘了 `--image` |
-| 400 `prompt` 长度错误 | `edit-dashscope` 的 prompt 限 1–800 字符 |
+| 400 `prompt` 长度错误 | `edit-advanced` 的 prompt 限 1–800 字符 |
 | 402 INSUFFICIENT_CREDITS | 账户积分不足，先充值 |
 | 413 | 输入图片过大，压缩后再传 |

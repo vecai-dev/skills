@@ -7,9 +7,9 @@ ve.py —— VisionEngine CLI 入口。
     python ve.py <组> <命令> [参数]
 
 环境变量：
-    VISION_ENGINE_API_ENDPOINT   后端地址（必需），如 https://api.visionengine-tech.com
+    VISION_ENGINE_API_ENDPOINT   平台服务地址（必需），如 https://api.visionengine-tech.com
     VISION_ENGINE_API_KEY        Bearer API Key（必需）
-    VISION_ENGINE_RENDER_ENDPOINT Remotion 渲染后端（默认官方地址）
+    VISION_ENGINE_RENDER_ENDPOINT Remotion 渲染服务（默认官方地址）
     VISION_ENGINE_WORKDIR        相对路径基准目录（默认当前目录）
     VISION_ENGINE_OUTPUT_DIR     产物落盘目录（默认 ./ve-output）
     VISION_ENGINE_FILE_MODE      remote（默认，自动上传）或 local（共享挂载）
@@ -36,7 +36,7 @@ def _common():
     parser.add_argument("--api-key", dest="api_key", default=argparse.SUPPRESS, help="覆盖 VISION_ENGINE_API_KEY")
     parser.add_argument("--render-endpoint", dest="render_endpoint", default=argparse.SUPPRESS,
                         help="覆盖 VISION_ENGINE_RENDER_ENDPOINT")
-    parser.add_argument("--timeout", type=float, default=argparse.SUPPRESS, help="单次 HTTP 超时秒数（默认 60）")
+    parser.add_argument("--timeout", type=float, default=argparse.SUPPRESS, help="单次请求超时秒数（默认 60）")
     return parser
 
 
@@ -56,7 +56,7 @@ def build_parser():
     common = _common()
     parser = argparse.ArgumentParser(
         prog="ve",
-        description="VisionEngine CLI —— 通过后端 HTTP API 使用图片/语音/字幕/视频/数字人/文件/Remotion 渲染能力",
+        description="VisionEngine CLI —— 图片/语音/字幕/视频/数字人/文件/Remotion 渲染能力",
         parents=[common],
     )
     groups = parser.add_subparsers(dest="group", required=True, metavar="<组>")
@@ -94,7 +94,7 @@ def build_parser():
     p.add_argument("--model")
     _add_output(p)
 
-    p = image_sub.add_parser("edit-dashscope", parents=[common], help="DashScope 图片编辑（image-edit/edit）")
+    p = image_sub.add_parser("edit-advanced", parents=[common], help="进阶图片编辑（image-edit/edit）")
     p.add_argument("--prompt", required=True, help="编辑指令，1-800 字符")
     p.add_argument("--image", action="append", required=True, help="输入图片，1-3 张")
     p.add_argument("--n", type=int, default=1, help="生成张数 1-6（默认 1）")
@@ -131,7 +131,7 @@ def build_parser():
     audio = groups.add_parser("audio", parents=[common], help="语音合成与音色查询")
     audio_sub = audio.add_subparsers(dest="action", required=True, metavar="<命令>")
 
-    p = audio_sub.add_parser("tts", parents=[common], help="文本转语音（火山引擎）")
+    p = audio_sub.add_parser("tts", parents=[common], help="文本转语音")
     p.add_argument("--text", required=True, help="待合成文本")
     p.add_argument("--speaker", default="zh_female_vv_uranus_bigtts", help="音色 ID，见 audio voices")
     p.add_argument("--format", default="mp3", choices=["mp3", "ogg_opus", "pcm"])
@@ -354,7 +354,7 @@ def build_parser():
     _add_output(p)
 
     # ---- llm ----------------------------------------------------
-    llm = groups.add_parser("llm", parents=[common], help="LLM 对话（OpenRouter 代理）")
+    llm = groups.add_parser("llm", parents=[common], help="LLM 对话（文案/脚本生成）")
     llm_sub = llm.add_subparsers(dest="action", required=True, metavar="<命令>")
 
     p = llm_sub.add_parser("chat", parents=[common], help="发起一次对话补全")
