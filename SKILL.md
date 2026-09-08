@@ -5,6 +5,7 @@ license: "Proprietary"
 compatibility: "Python 3.9+（仅标准库，无需安装依赖）；需要网络访问平台服务；使用前请在 https://www.visionengine-tech.com/keys 获取密钥，并设置环境变量 VISION_ENGINE_API_KEY"
 metadata:
   author: "VisionEngine 视擎科技"
+  version: "1.0.0"
   homepage: "https://www.visionengine-tech.com"
 ---
 
