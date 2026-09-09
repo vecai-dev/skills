@@ -1,59 +1,63 @@
 # VisionEngine Skills
 
-VisionEngine（视擎科技）的 Agent Skills 集合：把平台的媒体 AI 能力打包成 Claude Code / 任意 agent 可直接调用的技能。
+[![English](https://img.shields.io/badge/English-Click-yellow)](README.md)
+[![中文文档](https://img.shields.io/badge/中文文档-点击查看-orange)](README-zh.md)
+
+Agent Skills collection for VisionEngine — packaging the platform's media AI capabilities into skills that Claude Code or any agent can call directly.
 
 ![icon](skills/visionengine/icon.png)
 
-## 安装
+## Install
 
 ```bash
-# 方式一：一键安装（skills CLI）
+# Option 1: install via the skills CLI
 npx skills add vecai-dev/skills
 
-# 方式二：手动复制到技能目录
-cp -r skills/visionengine ~/.claude/skills/visionengine          # 用户级
-cp -r skills/visionengine <项目根>/.claude/skills/visionengine   # 项目级
+# Option 2: copy the skill into your skills directory
+cp -r skills/visionengine ~/.claude/skills/visionengine          # user-level
+cp -r skills/visionengine <project>/.claude/skills/visionengine  # project-level
 ```
 
-## 配置
+## Configuration
 
-所有技能共用一个密钥（服务地址有内置默认值，无需配置）：
+All skills share a single API key. Service endpoints have built-in defaults, so no extra configuration is needed:
 
 ```bash
-export VISION_ENGINE_API_KEY=<在 https://www.visionengine-tech.com/keys 获取的密钥>
+export VISION_ENGINE_API_KEY=<get yours at https://www.visionengine-tech.com/keys>
 ```
 
-## 可用技能
+## Available skills
 
 ### /visionengine
 
-零依赖 Python CLI（仅标准库），覆盖图片生成/编辑/识别/反推、语音合成与音色克隆、字幕生成与打轴、图生视频/文生视频/风格重绘/视频理解、数字人对口型、Remotion 工作区文件管理与远端渲染、LLM 文案生成。
+A zero-dependency Python CLI (standard library only) covering image generation / editing / recognition / prompt reverse, text-to-speech and voice cloning, subtitle generation and forced alignment, image-to-video / text-to-video / style transfer / video understanding, digital-human lip sync, Remotion workspace file management and remote rendering, and LLM copywriting.
 
-示例提示词：
+Example prompts:
 
-- 生成一张 9:16 的竖版封面图，主题是赛博朋克城市夜景
-- 用这段说话视频克隆我的音色，再用这个音色念一段欢迎语
-- 把 ./bgm.mp3 上传到我的 Remotion 工作区，然后渲染 MyVideo 成片
-- 给这段视频生成中文字幕，并输出 .srt 文件
+- Generate a 9:16 vertical cover image with a cyberpunk city night scene
+- Clone my voice from this talking-head video, then read a welcome message with it
+- Upload ./bgm.mp3 to my Remotion workspace, then render the MyVideo composition
+- Generate Chinese subtitles for this video and export a .srt file
 
-详见 [skills/visionengine/SKILL.md](skills/visionengine/SKILL.md)。
+See [skills/visionengine/SKILL.md](skills/visionengine/SKILL.md) for details.
 
-## 目录结构
+## Repository layout
 
 ```
-skills/                       # 仓库根（GitHub: vecai-dev/skills）
-├── README.md                 # 本文件
+skills/                       # repo root (GitHub: vecai-dev/skills)
+├── README.md                 # this file
+├── README-zh.md              # Chinese documentation
 ├── LICENSE                   # MIT
-└── skills/visionengine/      # 技能本体
-    ├── SKILL.md              # 触发说明、命令地图、核心工作流
-    ├── README.md             # 技能级说明（安装、配置、能力一览）
-    ├── CHANGELOG.md          # 更新记录
-    ├── icon.png              # 图标
-    ├── scripts/              # ve.py（入口）+ _ve_client.py / _ve_commands.py
-    ├── references/           # 按域拆分的详细文档
-    └── assets/               # 随包分发的离线音色目录
+└── skills/visionengine/      # the skill
+    ├── SKILL.md              # triggers, command map, core workflows
+    ├── README.md             # skill-level docs (install, config, commands)
+    ├── CHANGELOG.md          # changelog
+    ├── icon.png              # icon
+    ├── scripts/              # ve.py (entry) + _ve_client.py / _ve_commands.py
+    ├── references/           # per-domain reference docs
+    └── assets/               # bundled offline voice catalog
 ```
 
-## 许可
+## License
 
 [MIT](LICENSE)
