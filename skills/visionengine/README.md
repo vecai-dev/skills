@@ -1,4 +1,4 @@
-# vec-skills
+# VisionEngine 技能包（visionengine）
 
 VisionEngine（视擎科技）媒体 AI 能力的命令行技能包：一个零依赖的 Python CLI，覆盖平台的图片、语音、字幕、视频、数字人、Remotion 工作区与渲染能力，供 Claude Code / 任意 agent 直接调用。
 
@@ -10,10 +10,10 @@ VisionEngine（视擎科技）媒体 AI 能力的命令行技能包：一个零�
 
 ```bash
 # 用户级：所有项目可用
-cp -r . ~/.claude/skills/vec-skills
+cp -r . ~/.claude/skills/visionengine
 
 # 项目级：仅该项目可用
-cp -r . <项目根>/.claude/skills/vec-skills
+cp -r . <项目根>/.claude/skills/visionengine
 ```
 
 ## 配置
@@ -57,7 +57,7 @@ python <skill>/scripts/ve.py files list --path . --max-depth 1
 ## 目录结构
 
 ```
-vec-skills/
+visionengine/
 ├── SKILL.md            # 技能说明（触发条件、命令地图、工作流）
 ├── README.md           # 本文件
 ├── CHANGELOG.md        # 更新记录

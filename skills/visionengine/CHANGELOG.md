@@ -1,6 +1,6 @@
 # 更新记录
 
-本文件记录 vec-skills 技能包的用户可见变更。版本号遵循语义化版本（`major.minor.patch`）。
+本文件记录 visionengine 技能包的用户可见变更。版本号遵循语义化版本（`major.minor.patch`）。
 
 ## 1.0.0 — 2026-09-09
 
