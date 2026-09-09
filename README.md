@@ -12,11 +12,16 @@ Agent Skills collection for VisionEngine — packaging the platform's media AI c
 ```bash
 # Option 1: install via the skills CLI
 npx skills add vecai-dev/skills
+npx skills add vecai-dev/skills --skill visionengine --agent claude-code --copy -y  # non-interactive
 
 # Option 2: copy the skill into your skills directory
 cp -r skills/visionengine ~/.claude/skills/visionengine          # user-level
 cp -r skills/visionengine <project>/.claude/skills/visionengine  # project-level
 ```
+
+Interactive install asks which agents and which skills to install. Add `-y` to skip the prompts, and
+`--copy` to copy files instead of symlinking (recommended on Windows, where symlinks require
+Developer Mode or administrator rights).
 
 ## Configuration
 

@@ -12,11 +12,15 @@ VisionEngine（视擎科技）的 Agent Skills 集合：把平台的媒体 AI �
 ```bash
 # 方式一：一键安装（skills CLI）
 npx skills add vecai-dev/skills
+npx skills add vecai-dev/skills --skill visionengine --agent claude-code --copy -y  # 非交互
 
 # 方式二：手动复制到技能目录
 cp -r skills/visionengine ~/.claude/skills/visionengine          # 用户级
 cp -r skills/visionengine <项目根>/.claude/skills/visionengine   # 项目级
 ```
+
+交互式安装会询问装到哪些 agent、装哪些技能；加 `-y` 跳过询问，加 `--copy` 以复制代替符号链接
+（Windows 上符号链接需要开发者模式或管理员权限，推荐用 `--copy`）。
 
 ## 配置
 
