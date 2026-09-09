@@ -1,4 +1,4 @@
-# vec-skills
+# VisionEngine Skills
 
 VisionEngine（视擎科技）的 Agent Skills 集合：把平台的媒体 AI 能力打包成 Claude Code / 任意 agent 可直接调用的技能。
 
@@ -8,7 +8,7 @@ VisionEngine（视擎科技）的 Agent Skills 集合：把平台的媒体 AI �
 
 ```bash
 # 方式一：一键安装（skills CLI）
-npx skills add vecai-dev/vec-skills
+npx skills add vecai-dev/skills
 
 # 方式二：手动复制到技能目录
 cp -r skills/vec-skills ~/.claude/skills/vec-skills          # 用户级
@@ -41,18 +41,17 @@ export VISION_ENGINE_API_KEY=<在 https://www.visionengine-tech.com/keys 获取�
 ## 目录结构
 
 ```
-vec-skills/
+skills/                       # 仓库根（GitHub: vecai-dev/skills）
 ├── README.md                 # 本文件
 ├── LICENSE                   # MIT
-└── skills/
-    └── vec-skills/           # 技能本体
-        ├── SKILL.md          # 触发说明、命令地图、核心工作流
-        ├── README.md         # 技能级说明（安装、配置、能力一览）
-        ├── CHANGELOG.md      # 更新记录
-        ├── icon.png          # 图标
-        ├── scripts/          # ve.py（入口）+ _ve_client.py / _ve_commands.py
-        ├── references/       # 按域拆分的详细文档
-        └── assets/           # 随包分发的离线音色目录
+└── skills/vec-skills/        # 技能本体
+    ├── SKILL.md              # 触发说明、命令地图、核心工作流
+    ├── README.md             # 技能级说明（安装、配置、能力一览）
+    ├── CHANGELOG.md          # 更新记录
+    ├── icon.png              # 图标
+    ├── scripts/              # ve.py（入口）+ _ve_client.py / _ve_commands.py
+    ├── references/           # 按域拆分的详细文档
+    └── assets/               # 随包分发的离线音色目录
 ```
 
 ## 许可
