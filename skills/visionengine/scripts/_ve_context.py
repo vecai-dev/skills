@@ -279,7 +279,9 @@ def require_api_key():
     if key:
         return key, source
     raise VeError(
-        "缺少 VisionEngine API Key。请向用户询问 API Key（获取地址："
+        "缺少 VisionEngine API Key。VECSKILL 云端工作区请先通过平台授权卡获取"
+        "（VEC_AI_API_KEY 会写入当前项目 .env，本轮的 Bash 命令前先 "
+        "set -a; . ./.env; set +a）；本地 / VECONLINE 请向用户询问 Key（获取地址："
         "https://www.visionengine-tech.com/keys），然后在该命令前设置环境变量后重试："
         "VEC_AI_API_KEY=<用户的 Key> python <skill>/scripts/ve.py <原命令>。"
         "不要把 Key 写入文件、日志或回复中。",

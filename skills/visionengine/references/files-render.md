@@ -137,7 +137,7 @@ workspaceId 解析顺序：`--workspace-id` → `VE_WORKSPACE_ID` → 向上 8 �
 
 | 错误码 / 现象 | 原因与处理 |
 |---|---|
-| `MISSING_API_KEY` | 先向用户询问 Key，再以 `VEC_AI_API_KEY=...` 重试 |
+| `MISSING_API_KEY` | VECSKILL 走平台授权卡；本地 / VECONLINE 先向用户询问 Key，再以 `VEC_AI_API_KEY=...` 重试 |
 | `WORKSPACE_REQUIRED` | 本地渲染前先创建/绑定 VECONLINE 工作区 |
 | `ARTIFACT_IDENTIFIER_REQUIRED` | VECSKILL 多技能时显式传 `--artifact-identifier` |
 | `INVALID_ROUND_TIMESTAMP` | 从用户消息末尾取 10 位秒；不要传毫秒 |

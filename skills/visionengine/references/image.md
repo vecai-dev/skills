@@ -82,7 +82,7 @@ python <skill>/scripts/ve.py image prompt-reverse --image photo.jpg --output-lan
 
 | 现象 | 原因与处理 |
 |---|---|
-| `MISSING_API_KEY` | 先向用户询问 Key，再以 `VEC_AI_API_KEY=...` 重试 |
+| `MISSING_API_KEY` | VECSKILL 走平台授权卡；本地 / VECONLINE 先向用户询问 Key，再以 `VEC_AI_API_KEY=...` 重试 |
 | `image edit` 多图报错 | 只接受单图；多图改用 `edit-advanced` |
 | 400 prompt 长度错误 | `edit-advanced` 的 prompt 限 1–800 字符 |
 | 402 `INSUFFICIENT_CREDITS` | 账户积分不足，先充值 |

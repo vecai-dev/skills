@@ -29,15 +29,21 @@ python <skill>/scripts/ve.py env
 python <skill>/scripts/ve.py env --probe
 ```
 
-## API Key（先问用户）
+## API Key（平台授权 / 本地询问）
 
-只使用一个环境变量 `VEC_AI_API_KEY`。缺 Key 时 CLI 会返回 `MISSING_API_KEY`，
-此时**先向用户询问 API Key**，并告诉用户可在 `https://www.visionengine-tech.com/keys` 获取；
-拿到后在该命令前设置环境变量重试：
+只使用一个环境变量 `VEC_AI_API_KEY`。CLI 缺 Key 时返回 `MISSING_API_KEY`。
 
-```bash
-VEC_AI_API_KEY=<用户的 Key> python <skill>/scripts/ve.py <原命令>
-```
+- **VECSKILL 云端工作区（`render context` 的 `usage_type=skills`）**：不要向用户索要密钥原文。
+  用平台 AskUser 授权卡请求授权：只问一题，`header` 逐字为 `VEC_API_KEY_AUTH`，
+  `options` 至少给一项占位（平台会替换成固定的「同意授权（推荐）/ 不同意」）。
+  用户同意后平台会把 `VEC_AI_API_KEY` 写入当前项目根 `.env`；**本轮**在同一条 Bash 调用里
+  先 `set -a; . ./.env; set +a` 再执行命令，下一轮起平台自动注入。
+- **本地 / VECONLINE**：缺 Key 时先向用户询问，并告诉用户可在
+  `https://www.visionengine-tech.com/keys` 获取；拿到后在该命令前设置环境变量重试：
+
+  ```bash
+  VEC_AI_API_KEY=<用户的 Key> python <skill>/scripts/ve.py <原命令>
+  ```
 
 不要把 Key 写入文件、日志、命令输出或最终回复。CLI 会把它映射为各 MCP 的 `API_KEY`，
 不会打印、不会落盘。

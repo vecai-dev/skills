@@ -26,7 +26,7 @@ export VEC_AI_API_KEY=<在 https://www.visionengine-tech.com/keys 获取的密�
 ```
 
 CLI 会把它映射为各 MCP 子进程的 `API_KEY`；不要把 Key 写入文件、日志或最终回复。
-缺 Key 时 AI 应先向用户询问，再以 `VEC_AI_API_KEY=...` 重试。
+缺 Key 时：**VECSKILL 云端工作区走平台授权卡**（AskUser header `VEC_API_KEY_AUTH`，平台写入项目 `.env`，不向用户索要密钥原文）；本地 / VECONLINE 才向用户询问，再以 `VEC_AI_API_KEY=...` 重试。
 
 ## 快速开始
 

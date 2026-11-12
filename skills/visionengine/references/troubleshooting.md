@@ -24,7 +24,7 @@ python <skill>/scripts/ve.py env --probe
 
 | 变量 | 必需 | 默认 | 说明 |
 |---|---|---|---|
-| `VEC_AI_API_KEY` | ✅ | 无 | 唯一必须设置的变量；由 AI 向用户询问 |
+| `VEC_AI_API_KEY` | ✅ | 无 | 唯一必须设置的变量；VECSKILL 走平台授权卡，本地 / VECONLINE 由 AI 向用户询问 |
 | `VEC_AI_API_URL` | | `https://api.visionengine-tech.com` | 平台服务地址 |
 | `VEC_AI_RENDER_URL` | | `https://veconline-ai-api.visionengine-tech.com` | Remotion 渲染服务 |
 | `VEC_AI_OUTPUT_DIR` | | `./ve-output` | 产物落盘目录 |
@@ -33,7 +33,9 @@ python <skill>/scripts/ve.py env --probe
 | `VE_MCP_BIN_<KEY>` | | 无 | 覆盖某个 MCP 的启动命令（开发调试） |
 | `VE_DEBUG` | | 无 | `1` 时把 MCP stderr 转发到 CLI stderr |
 
-缺 Key 时 CLI 返回 `MISSING_API_KEY`，不会打印 Key。不要让 AI 把 Key 写进文件或最终回复。
+缺 Key 时 CLI 返回 `MISSING_API_KEY`，不会打印 Key。VECSKILL 云端工作区里用平台授权卡
+（AskUser header `VEC_API_KEY_AUTH`）拿 Key，平台写入当前项目 `.env`；本地 / VECONLINE
+才向用户询问，再以 `VEC_AI_API_KEY=...` 重试。不要让 AI 把 Key 写进文件或最终回复。
 
 ## MCP 启动
 
@@ -64,7 +66,7 @@ python <skill>/scripts/ve.py env --probe
 
 | 错误码 | 含义与处理 |
 |---|---|
-| `MISSING_API_KEY` | 先向用户询问 Key，再以 `VEC_AI_API_KEY=...` 重试 |
+| `MISSING_API_KEY` | VECSKILL 走平台授权卡；本地 / VECONLINE 先向用户询问 Key，再以 `VEC_AI_API_KEY=...` 重试 |
 | `WORKSPACE_REQUIRED` | 本地渲染/媒体上传前先创建或绑定 VECONLINE 工作区 |
 | `ARTIFACT_IDENTIFIER_REQUIRED` | VECSKILL 多技能时显式传 `--artifact-identifier` |
 | `INVALID_ROUND_TIMESTAMP` | 从用户消息末尾取 10 位秒，不要传毫秒 |

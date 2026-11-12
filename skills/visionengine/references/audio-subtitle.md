@@ -75,7 +75,7 @@ python <skill>/scripts/ve.py subtitle align --audio voice.mp3 --text-file transc
 
 | 现象 | 原因与处理 |
 |---|---|
-| `MISSING_API_KEY` | 先向用户询问 Key，再以 `VEC_AI_API_KEY=...` 重试 |
+| `MISSING_API_KEY` | VECSKILL 走平台授权卡；本地 / VECONLINE 先向用户询问 Key，再以 `VEC_AI_API_KEY=...` 重试 |
 | TTS 返回错误 | 文本含不支持字符（过长/纯符号），或音色 ID 拼错 |
 | 字幕一直没有 `utterances` | 音频无人声（纯音乐/静音），或语言参数与音频不匹配 |
 | `subtitle align` 参数错误 | 必须给 `--caption-type speech|singing` 与逐字稿 |

@@ -10,7 +10,9 @@
   - 优先使用 PATH 上的 `ve-*`（云端预装），本地回退
     `npx -y @visionengine/<pkg>@latest`；
   - 新增零依赖 Python MCP 客户端（initialize / tools/call / tools/list）。
-- 配置变量从 `VISION_ENGINE_API_KEY` 改为 **`VEC_AI_API_KEY`**；Key 由 AI 向用户询问。
+- 配置变量从 `VISION_ENGINE_API_KEY` 改为 **`VEC_AI_API_KEY`**；VECSKILL 云端缺 Key
+  时走平台 AskUser 授权卡（header `VEC_API_KEY_AUTH`，平台写入项目 `.env`），
+  本地 / VECONLINE 由 AI 向用户询问。
 - 删除 `llm chat`（无对应 MCP 包）与 `api` 直连透传。
 - `video recognize submit` 改为异步 MCP 调用；CLI 默认轮询到终态以保持旧用法，
   `--no-wait` 只返回 `task_id`。
