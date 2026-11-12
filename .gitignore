@@ -4,3 +4,5 @@ __pycache__/
 
 # 评测产物与临时文件（不提交）
 temp/
+ve-output/
+.ve-cache/

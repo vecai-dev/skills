@@ -3,108 +3,101 @@
 目录
 - [先跑自检](#先跑自检)
 - [环境变量](#环境变量)
-- [鉴权与端点白名单](#鉴权与端点白名单)
-- [HTTP 状态码对照](#http-状态码对照)
-- [积分与退款](#积分与退款)
+- [MCP 启动](#mcp-启动)
+- [密钥与鉴权](#密钥与鉴权)
+- [常见错误码](#常见错误码)
 - [超时与长任务](#超时与长任务)
-- [签名 URL 过期](#签名-url-过期)
-- [上传与路径](#上传与路径)
-- [Windows / Git Bash 特有坑](#windows--git-bash-特有坑)
-- [FILE_MODE 与共享挂载](#file_mode-与共享挂载)
+- [Windows](#windows)
+- [路径与目录纪律](#路径与目录纪律)
 
 ## 先跑自检
 
 ```bash
 python <skill>/scripts/ve.py env
+python <skill>/scripts/ve.py env --probe
 ```
 
-输出 `endpoint`、`api_key_present`、`workdir`、`output_dir` 以及 `GET /api/v1/auth/me` 的结果
-（`user_id` / `workspace_root` / `shared_root`）。**鉴权或端点有问题，先看这里。**
+第一条输出 Python/Node/npx、各 MCP 的启动命令与来源、Key 是否存在、当前上下文与输出目录。
+第二条会启动 render 和 file bridge，列出 serverInfo 与工具名，用于确认 MCP 协议与 PATH 是否正常。
 
 ## 环境变量
 
 | 变量 | 必需 | 默认 | 说明 |
 |---|---|---|---|
-| `VISION_ENGINE_API_KEY` | ✅ | 无 | Bearer 令牌（唯一必须设置的变量） |
-| `VISION_ENGINE_API_ENDPOINT` | | `https://api.visionengine-tech.com` | 平台服务地址 |
-| `VISION_ENGINE_RENDER_ENDPOINT` | | `https://veconline-ai-api.visionengine-tech.com` | Remotion 渲染服务 |
-| `VISION_ENGINE_WORKDIR` | | 当前目录 | 相对路径基准 |
-| `VISION_ENGINE_OUTPUT_DIR` | | `./ve-output` | 产物落盘目录 |
-| `VISION_ENGINE_FILE_MODE` | | `remote` | `remote` 自动上传 / `local` 共享挂载 |
-| `VISION_ENGINE_REMOTION_WORK_DIR` | | `/vec` | `local` 模式的挂载根 |
+| `VEC_AI_API_KEY` | ✅ | 无 | 唯一必须设置的变量；由 AI 向用户询问 |
+| `VEC_AI_API_URL` | | `https://api.visionengine-tech.com` | 平台服务地址 |
+| `VEC_AI_RENDER_URL` | | `https://veconline-ai-api.visionengine-tech.com` | Remotion 渲染服务 |
+| `VEC_AI_OUTPUT_DIR` | | `./ve-output` | 产物落盘目录 |
+| `VEC_AI_FILE_MODE` | | 自动 | `remote` / `local`；一般不需要手动设置 |
+| `VEC_AI_REMOTION_WORK_DIR` | | `/vec` | 云端共享挂载根 |
+| `VE_MCP_BIN_<KEY>` | | 无 | 覆盖某个 MCP 的启动命令（开发调试） |
+| `VE_DEBUG` | | 无 | `1` 时把 MCP stderr 转发到 CLI stderr |
 
-缺少 API Key 时 CLI 会直接报错并给出示例，退出码 1；其余变量都有内置默认值。`--timeout` / `--out` 可在命令行临时覆盖。
+缺 Key 时 CLI 返回 `MISSING_API_KEY`，不会打印 Key。不要让 AI 把 Key 写进文件或最终回复。
 
-**密钥只经环境变量注入，不要写进任何文件或提交到仓库。**
+## MCP 启动
 
-## 鉴权与端点权限
+启动优先级：
 
-- 只有已开放的接口接受 API Key；管理类接口需要更高权限的令牌。
-- 典型无权访问（会 401）：`/api/v1/image-edit/save`、studio 项目路由、部分管理端点。
-- `api` 透传不等于全通——透传被 401 时，说明该接口未向 API Key 开放。
-- 令牌无效/过期 → 401；令牌有效但无该资源权限 → 403。
+1. `VE_MCP_BIN_<KEY>`，例如 `VE_MCP_BIN_RENDER="node .../packages/render/dist/index.js"`；
+2. PATH 上的 `ve-render` / `ve-remotion-file-bridge` / `ve-image-generate` 等（云端 entrypoint 预装）；
+3. `npx -y @visionengine/<pkg>@latest`。
 
-## HTTP 状态码对照
+常见问题：
 
-| 状态码 | 含义 | 处理 |
-|---|---|---|
-| 400 | 参数错误（`detail` 里通常有中文说明） | 按提示改参数 |
-| 401 | 缺少/无效 API Key | 检查 `VISION_ENGINE_API_KEY` |
-| 402 | 积分不足（`INSUFFICIENT_CREDITS`） | 充值；注意渲染积分与媒体积分可能是不同池 |
-| 403 | 资源不属于当前用户 | 检查 `--avatar-id` / `task_id` / 存储路径属主 |
-| 404 | 路径或任务不存在 | 核对端点；`task_id` 拼写 |
-| 413 | 体积超限 | 压缩输入；见下 |
-| 422 | 上游校验失败（如视频理解输出不合规） | 换更常规的素材重试 |
-| 500 | 服务端异常 | 重试；持续失败看 `error` 字段 |
-| 503 | 上游模型不可用 | 稍后重试 |
+| 现象 | 处理 |
+|---|---|
+| `MCP_RUNTIME_MISSING` | 没有 Node.js/npx；安装 Node 18+，或使用云端预装命令 |
+| 首次调用很慢 | npx 正在下载 MCP 包；后续会命中缓存 |
+| `MCP_EXITED` | 看 `VE_DEBUG=1` 的 stderr；常见于 npx 网络失败或包版本不兼容 |
+| `MCP_TOOL_MISSING` | npm 上的包版本过旧；使用 `@latest` 或升级预装包 |
+| `MCP_TIMEOUT` | 单次调用超时；用 `--timeout` 放宽，或改用 `query --task-id` 续查 |
 
-## 积分与退款
+## 密钥与鉴权
 
-- 异步任务（视频生成/克隆/对口型）**先预扣**、完成后按实际用量结算；失败自动回滚，
-  `billing_status` 会显示 `settled` / `rolled_back`。
-- 预扣额度：img2video 200、text2video 300、style-transfer 100、lipsync 500、video recognize 20、LLM 20。
-- 每次 `query` 都返回 `billing_status`，可据此判断是否已退款。
+- 只有 `VEC_AI_API_KEY`；CLI 映射为每个 MCP 子进程的 `API_KEY`。
+- 同一把 Key 可调 ve-backend 和 veconline-ai-api 的所有平台 MCP；积分不足会返回 402。
+- 不要提供 `--api-key` 参数；不要打印 Key 的前缀或完整值。
+- Key 获取地址：`https://www.visionengine-tech.com/keys`。
+
+## 常见错误码
+
+| 错误码 | 含义与处理 |
+|---|---|
+| `MISSING_API_KEY` | 先向用户询问 Key，再以 `VEC_AI_API_KEY=...` 重试 |
+| `WORKSPACE_REQUIRED` | 本地渲染/媒体上传前先创建或绑定 VECONLINE 工作区 |
+| `ARTIFACT_IDENTIFIER_REQUIRED` | VECSKILL 多技能时显式传 `--artifact-identifier` |
+| `INVALID_ROUND_TIMESTAMP` | 从用户消息末尾取 10 位秒，不要传毫秒 |
+| `UNSUPPORTED_IN_SKILLS` | VECSKILL 不使用 file bridge；直接用本地文件系统 |
+| `IMAGE_SEQUENCE_UNSUPPORTED` | VECSKILL 改用 video/still/audio |
+| `INSUFFICIENT_CREDITS` | 积分不足；提示用户充值 |
+| `WORKSPACE_QUOTA_EXCEEDED` | 免费 2 个工作区已满；提示购买或清空（清空前征得同意） |
+| `NO_RENDERABLE_PROJECT` | 工作区没有 package.json + 入口文件；先上传工程 |
+| `OUTPUT_NOT_FOUND` | 任务未 `done` 或 `outputPath` 为空；先 `render wait` |
+| `MCP_NETWORK_ERROR` | 网络/后端不可达；稍后重试或看 `VE_DEBUG=1` |
 
 ## 超时与长任务
 
-- 默认单次请求超时 60s；图片类放宽到 180s；视频理解/克隆/对口型放宽到 600s。
-- `--wait` 的轮询上限默认 300s（`--timeout` 可调）。**超时不会丢任务**：
-  用 `query --task-id <id>` 继续查即可。
-- GPU 语音克隆首次调用含冷启动，约 175s 属正常。
-- `video recognize submit` 是同步阻塞调用，不要用 `--wait` 概念套它。
+- 默认单次 MCP 调用超时因能力而异：图片 180s、TTS 600s、字幕 700s、渲染 submit 120s、
+  渲染 wait 1800s、工作区上传 1800s、下载 600s。
+- 异步任务轮询：`--wait` / `wait`；超时不会丢任务，用 `task_id` 继续查。
+- 数字人 GPU 语音克隆首次含冷启动，约 175s 属正常。
+- 渲染任务失败/超时后，CLI 会返回 `error` / `message`（已脱敏）；不要直接向用户展示内部路径。
 
-## 签名 URL 过期
+## Windows
 
-| 来源 | 有效期 |
-|---|---|
-| 私有产物链接（克隆参考音频、克隆产物） | 约 1h |
-| 生成类产物链接（图片编辑、视频生成） | 约 24h |
+- `npx` 在 Windows 上是 `npx.CMD`；CLI 已处理 `.cmd` 启动与 `cmd.exe /c` 兜底。
+- CLI 启动时强制 stdout/stderr 为 UTF-8；如果你另写 Python/管道处理输出，给这些命令加
+  `PYTHONUTF8=1`。
+- 本地相对路径以当前目录为基准；云端路径使用 `/vec/...`（POSIX）。
+- `FILE_MODE=local` 只适用于服务端/已挂载环境；本地用户使用默认 `remote`。
 
-链式流程请传递**存储路径**（`storage.path` / `video_path`，不过期），URL 只在下载时即时获取；
-过期就重新 `query` 一次拿新 URL。
+## 路径与目录纪律
 
-## 上传与路径
-
-- 相对路径以 `VISION_ENGINE_WORKDIR` 为基准解析。
-- 上传阈值 8MB：以下单次 multipart，以上 4MB 分片（CLI 自动复用 `upload_id`）。
-- 同名冲突服务端自动改名 → 用返回的 `file.path`，不要假设文件名。
-- 代码文件（`.tsx`/`.ts`）上传必须 `--target-path src`。
-
-## Windows / Git Bash 特有坑
-
-- **MSYS 路径改写**：Git Bash 会把 `/api/v1/...` 参数改写成 `C:/Program Files/Git/api/v1/...`。
-  CLI 的 `api` 命令已自动还原；其它命令若发现路径被改写，可用 `MSYS_NO_PATHCONV=1` 前缀禁用：
-  ```bash
-  MSYS_NO_PATHCONV=1 python ve.py api GET /api/v1/files/list
-  ```
-- **HTTP 头不能承载中文**：`subtitle` 的 `X-Media-Filename` 会被 ASCII 化；中文文件名建议改用 URL 输入。
-- **控制台编码**：CLI 启动时把 stdout/stderr 强制为 UTF-8，重定向到文件时中文不会乱码。
-  若你另写 Python 片段或 shell 管道处理输出（如 `python -c ...`、`... | python -m json.tool`），
-  Windows 下它们仍会用 GBK 解码而显示乱码——给这些命令加 `PYTHONUTF8=1` 前缀即可，与 CLI 本身无关。
-- `FILE_MODE=local` 依赖 POSIX 挂载路径，**Windows 客户端不可用**（`relative_to` 会失败），请用默认 `remote`。
-
-## FILE_MODE 与共享挂载
-
-- `remote`（默认）：需要 URL 的媒体先 `POST /save` 上传，再拼 `/shared/<path>?download=true`。
-- `local`：文件已在共享挂载（`VISION_ENGINE_REMOTION_WORK_DIR`，默认 `/vec`）之下，直接改写成 `/shared` URL，不重复上传。
-  仅适用于服务端 / 已挂载环境。
+- VECONLINE：工作区在 `/vec/sys-veconline/{userId}/{conv-id}`；结果在 `out/`。
+- VECSKILL：工作区在 `/vec/sys-skills/{userId}/{conv-id}`；交付物在 `artifact/{id}/`，
+  中间文件/日志在 `workspace/{id}/`；不要写 `/tmp`。
+- CLI 的缓存默认：
+  - 本地/VECONLINE：`./ve-output/.ve-cache`；
+  - VECSKILL：`workspace/{id}/.ve-cache`。
+- 不要把绝对 NAS 路径、`/vec/sys-*`、Key 写进最终回复；CLI 已对错误做脱敏。
