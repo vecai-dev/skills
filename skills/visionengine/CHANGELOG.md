@@ -10,7 +10,7 @@
   - 优先使用 PATH 上的 `ve-*`（云端预装），本地回退
     `npx -y @visionengine/<pkg>@latest`；
   - 新增零依赖 Python MCP 客户端（initialize / tools/call / tools/list）。
-- 配置变量从 `VISION_ENGINE_API_KEY` 改为 **`VEC_AI_API_KEY`**；VECSKILL 云端缺 Key
+- 配置变量统一为 **`VEC_AI_API_KEY`**；VECSKILL 云端缺 Key
   时走平台 AskUser 授权卡（header `VEC_API_KEY_AUTH`，平台写入项目 `.env`），
   本地 / VECONLINE 由 AI 向用户询问。
 - 删除 `llm chat`（无对应 MCP 包）与 `api` 直连透传。
@@ -38,7 +38,7 @@
   字幕生成与强制对齐、图生视频 / 文生视频 / 视频风格重绘 / 视频理解、数字人对口型、
   Remotion 工作区文件管理与远端渲染、LLM 文案生成。
 - 纯标准库实现（Python 3.9+，零依赖），单入口 `scripts/ve.py`。
-- 配置只需 `VISION_ENGINE_API_KEY`；服务地址、渲染服务地址均为内置默认值。
+- 配置只需平台 API Key；服务地址、渲染服务地址均为内置默认值。
 - 异步任务统一 `submit` / `query` 形态，`--wait` 轮询到终态，产物自动落盘。
 - 随包分发离线音色目录 `assets/voices.json`，`audio voices` 不联网、不计费。
 - 附带 `references/` 六篇分域文档：图片、语音与字幕、视频、数字人、工作区与渲染、故障排查。
