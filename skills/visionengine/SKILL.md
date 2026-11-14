@@ -45,7 +45,7 @@ python <skill>/scripts/ve.py env --probe
   VEC_AI_API_KEY=<用户的 Key> python <skill>/scripts/ve.py <原命令>
   ```
 
-不要把 Key 写入文件、日志、命令输出或最终回复。CLI 会把它映射为各 MCP 的 `API_KEY`，
+不要把 Key 写入文件、日志、命令输出或最终回复。CLI 会把它映射为各 MCP 的 `VEC_AI_API_KEY`，
 不会打印、不会落盘。
 
 ## 先判定运行环境

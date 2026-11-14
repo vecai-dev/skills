@@ -319,9 +319,11 @@ def require_skill_render(ctx):
 def child_env(ctx, api_key, package_key=""):
     env = dict(os.environ)
     if api_key:
-        env["API_KEY"] = api_key
+        env["VEC_AI_API_KEY"] = api_key
     else:
-        env.pop("API_KEY", None)
+        env.pop("VEC_AI_API_KEY", None)
+    # 统一字段名：不再向 MCP 子进程透传旧 API_KEY
+    env.pop("API_KEY", None)
     env["WORKDIR"] = str(ctx.project_dir)
     env["DEFAULT_OUTPUT_DIR"] = str(ctx.output_dir)
     env["FILE_MODE"] = ctx.file_mode

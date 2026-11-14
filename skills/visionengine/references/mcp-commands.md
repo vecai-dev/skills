@@ -76,7 +76,7 @@ CLI 为每个 MCP 子进程构造完整 env（继承 `os.environ` 后覆盖）�
 
 | 变量 | 值 |
 |---|---|
-| `API_KEY` | `VEC_AI_API_KEY`（缺失时不设置） |
+| `VEC_AI_API_KEY` | 由 `VEC_AI_API_KEY` 注入（缺失时不设置；旧 `API_KEY` 不再透传） |
 | `WORKDIR` | 工作区根目录（`ctx.project_dir`） |
 | `DEFAULT_OUTPUT_DIR` | `ctx.output_dir` |
 | `FILE_MODE` | `veconline`/`skills` → `local`；`standalone` → `remote` |

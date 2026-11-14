@@ -57,7 +57,7 @@ python <skill>/scripts/ve.py env --probe
 
 ## 密钥与鉴权
 
-- 只有 `VEC_AI_API_KEY`；CLI 映射为每个 MCP 子进程的 `API_KEY`。
+- 只有 `VEC_AI_API_KEY`；CLI 映射为每个 MCP 子进程的 `VEC_AI_API_KEY`。
 - 同一把 Key 可调 ve-backend 和 veconline-ai-api 的所有平台 MCP；积分不足会返回 402。
 - 不要提供 `--api-key` 参数；不要打印 Key 的前缀或完整值。
 - Key 获取地址：`https://www.visionengine-tech.com/keys`。

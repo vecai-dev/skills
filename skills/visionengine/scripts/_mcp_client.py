@@ -394,7 +394,7 @@ class McpRegistry:
         self._lock = threading.Lock()
 
     def get(self, spec: ServerSpec, env, cwd):
-        key = f"{spec.key}:{'key' if env.get('API_KEY') else 'nokey'}"
+        key = f"{spec.key}:{'key' if env.get('VEC_AI_API_KEY') else 'nokey'}"
         with self._lock:
             client = self._clients.get(key)
             if client is not None:
