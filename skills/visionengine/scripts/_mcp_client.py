@@ -369,7 +369,7 @@ def _clean_tool_error(text):
 
 def _error_code(parsed, message):
     haystack = f"{message} {parsed.get('error') or ''}".upper()
-    if "API_KEY" in haystack or "API KEY" in haystack:
+    if "VEC_AI_API_KEY" in haystack or "API KEY" in haystack:
         return "MISSING_API_KEY"
     if "WORKSPACE" in haystack and ("REQUIRED" in haystack or "CONV-" in haystack):
         return "WORKSPACE_REQUIRED"
