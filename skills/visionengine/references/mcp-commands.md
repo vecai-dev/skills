@@ -95,6 +95,6 @@ CLI 为每个 MCP 子进程构造完整 env（继承 `os.environ` 后覆盖）�
 ## 版本与发布
 
 - 技能包 2.0.0 依赖 `@visionengine/*@latest`。
-- `video-style-transfer` 本地 1.0.7 需先发布到 npm（1.0.6 也可用，但 1.0.7 包含最新修复）。
-- 媒体 MCP 的 `/save` 上传已补 `workspace_id` 并优先使用后端返回的 `root_path` 拼 `/shared`；
-  发布前请确认 npm latest 包含该修复。
+- 12 个包均已发布到 npm，运行时统一从 `@latest` 拉取。
+- 媒体 MCP 的 `/save` 上传已补 `workspace_id` 并优先使用后端返回的 `root_path` 拼 `/shared`。
+- 所有 MCP 仅读取 `VEC_AI_API_KEY`，不再兼容旧 `API_KEY`。
